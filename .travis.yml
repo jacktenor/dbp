@@ -4,7 +4,7 @@ git:
 services:
 - docker
 before_install:
-- git clone https://github.com/silverx2222/DualBootPatcher -b master DualBootPatcher/
+- git clone https://github.com/jacktenor/DualBootPatcher -b master DualBootPatcher/
 - cd DualBootPatcher && git submodule init && git submodule update && cd ../
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-base
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-android
@@ -16,8 +16,8 @@ script:
   -v \"${HOME}/.android:/builder/.android:rw,z\" silverx2222/dualbootpatcher:9.3.0-14-android
   bash << EOF  \ncd ~/DualBootPatcher/builder && cmake .. -DMBP_BUILD_TARGET=android &&  make -j16 && rm -rf assets && cpack &&  make apk \n"
 before_deploy:
-- git config --local user.name silverx2222
-- git config --local user.email silverx2222@gmail.com
+- git config --local user.name jacktenor
+- git config --local user.email jacktenor1@gmail.com
 - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%H%M%S')-debug}
 - git tag $TRAVIS_TAG --force
 deploy:
@@ -28,4 +28,4 @@ deploy:
   skip_cleanup: true
   on:
     all_branches: true
-    repo: silverx2222/DualBootPatcher
+    repo: jacktenor/DualBootPatcher
