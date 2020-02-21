@@ -29,4 +29,4 @@ See the [`docs/build/`](docs/build) directory for instructions on building for L
 License
 -------
 
-The patcher is licensed under GPLv3+ (see the LICENSE file). Third party libraries and programs are used under their respective licenses. Copies of these licenses are in the `licenses/` directory of this repository. Patches and other source code modifications to third party software are under the same license as the original software.
+The patcher is licensed under GPLv3+ (see the LICENSE file). Third party libraries and programs are used under their respective licenses. Copies of these licenses are in the `licenses/` directory of this repository. Patches and other source code modifications to third party software are under the same license as the original software..
