@@ -28,4 +28,4 @@ deploy:
   skip_cleanup: true
   on:
     all_branches: true
-    repo: jacktenor/DualBootPatcher
+    repo: jacktenor/dbp
