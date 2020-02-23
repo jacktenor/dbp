@@ -13,7 +13,7 @@ script:
 - mkdir -p ${TRAVIS_BUILD_DIR}/DualBootPatcher/builder/ && cd ${TRAVIS_BUILD_DIR}/DualBootPatcher/
 - "sudo docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v \"$(pwd):/builder/DualBootPatcher:rw,z\"
   -v \"${HOME}/.android:/builder/.android:rw,z\" silverx2222/dualbootpatcher:9.3.0-14-mingw
-  bash << EOF  \ncd ~/DualBootPatcher/builder\ncmake .. -DMBP_BUILD_TARGET=desktop -DMBP_PORTABLE=ON -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain-mingw.cmake && make -j16 && cpack &&  chmod +x dllpack && ./dllpack\n"
+  bash << EOF  \ncd ~/DualBootPatcher/builder\ncmake .. -DMBP_BUILD_TARGET=desktop -DMBP_PORTABLE=ON  && make -j16 && cpack &&  chmod +x dllpack && ./dllpack\n"
 after_success: 
 before_deploy:
   # Set up git user name and tag this commit
