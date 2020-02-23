@@ -4,28 +4,29 @@ git:
 services:
 - docker
 before_install:
-- git clone https://github.com/jacktenor/DualBootPatcher -b master DualBootPatcher/
+- git clone https://github.com/silverx2222/DualBootPatcher -b master DualBootPatcher/
 - cd DualBootPatcher && git submodule init && git submodule update && cd ../
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-base
-- docker pull silverx2222/dualbootpatcher:9.3.0-14-android
-#- docker pull silverx2222/dualbootpatcher:9.3.0-14-linux
+- docker pull silverx2222/dualbootpatcher:9.3.0-14-mingw
 script:
 - mkdir $HOME/.android
 - mkdir -p ${TRAVIS_BUILD_DIR}/DualBootPatcher/builder/ && cd ${TRAVIS_BUILD_DIR}/DualBootPatcher/
-- |
-  docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v "$(pwd):/builder/DualBootPatcher:rw,z" -v "${HOME}/.android:/builder/.android:rw,z" silverx2222/dualbootpatcher:9.3.0-14-android bash << EOF
-  cd DualBootPatcher/builder && cmake .. -DMBP_BUILD_TARGET=android -DMBP_BUILD_TYPE=debug && make -j16 && rm -rf assets && cpack && make apk -j16 << EOF
+- "sudo docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v \"$(pwd):/builder/DualBootPatcher:rw,z\"
+  -v \"${HOME}/.android:/builder/.android:rw,z\" silverx2222/dualbootpatcher:9.3.0-14-mingw
+  bash << EOF  \ncd ~/DualBootPatcher/builder\ncmake .. -DMBP_BUILD_TARGET=desktop -DMBP_PORTABLE=ON -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain-mingw.cmake && make -j16 && cpack &&  chmod +x dllpack && ./dllpack\n"
+after_success: 
 before_deploy:
-- git config --local user.name jacktenor
-- git config --local user.email jacktenor1@gmail.com
-- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%H%M%S')-debug}
-- git tag $TRAVIS_TAG --force
+  # Set up git user name and tag this commit
+  - git config --local user.name silverx2222
+  - git config --local user.email silverx2222@gmail.com
+  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%m%d%H%M')mingw}
+  - git tag $TRAVIS_TAG
 deploy:
   provider: releases
   api_key:
     secure: Kjprophq6Wp2uDZA7erciksi3G/NZpzXs+tg94PPkVSBxkVeHH8ISDXor8frdLDMJcz0JHyQ12yLUlKzK8HMFuric3ka0Jv+iu62sdUNCQ68nshaxkvDrCcBfGpUKsFCduWMIcVZjIFhl4mrUwtppn3JhaJ3HRUPk6la3Ntbe/pr+WxIM1a1+imv6MTIzSRj/3AI9szc0eD3hQLPXiT8M06rsp1ZjOTqxKxPVvdm70Q45qwAyML58961R/NWJQAYivqZkY9s+4t8/uJHH98afbDM4kYzpzMYS/4mO7l79da1tZOhehrwhVaha268rKpd4JnrLXgKioiRRGCrmZbkO+Awvxqc/j0q3lzWG84AMrWf5HvkBuo82c3X+I/G5x23C325ZszpPk1OP+tRfkSLIry6RJYnOlaLUZCkyiHHqpKEZCoS3KQgSSCPadci4DBMkf6tMDIPOlt7cndERb40vg7frYhZ8WyOZ/g/a4iq6XMzt8TP5QPUJ6n6lxpy65NBywZSNtzHedDI7pnCpbgm9i7yhgshuQ+XO3FykvwJopk7UslFATwaosgFyIHkQuZzWi65QYm84xgttygbldLspykm0rJAObKq8G1OlHaKcZquXRRevuYUO61X+EBNVQNrGTQKsWXRJfoUT4Bq3MNPPRpGv4iUSRP43n0bqO087ws=
-  file: "${TRAVIS_BUILD_DIR}/DualBootPatcher/Android_GUI/build/outputs/apk/debug/Android_GUI-debug.apk"
+    file: "${TRAVIS_BUILD_DIR}/DualBootPatcher/builder/DualBootPatcher-9.3.0-win32.zip"
   skip_cleanup: true
   on:
     all_branches: true
-    repo: jacktenor/dbp
+    repo: jacktenor/dbp 
