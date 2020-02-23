@@ -4,7 +4,7 @@ git:
 services:
 - docker
 before_install:
-- git clone https://github.com/jacktenor/DualBootPatcher -b master DualBootPatcher/
+- git clone https://github.com/jacktenor/dbp -b master DualBootPatcher/
 - cd DualBootPatcher && git submodule init && git submodule update && cd ../
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-base
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-android
