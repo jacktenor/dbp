@@ -4,29 +4,30 @@ git:
 services:
 - docker
 before_install:
-- git clone https://github.com/silverx2222/DualBootPatcher -b master DualBootPatcher/
+- git clone https://github.com/jacktenor/DualBootPatcher -b master DualBootPatcher/
 - cd DualBootPatcher && git submodule init && git submodule update && cd ../
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-base
-- docker pull silverx2222/dualbootpatcher:9.3.0-14-mingw
+- docker pull silverx2222/dualbootpatcher:9.3.0-14-android
 script:
 - mkdir $HOME/.android
 - mkdir -p ${TRAVIS_BUILD_DIR}/DualBootPatcher/builder/ && cd ${TRAVIS_BUILD_DIR}/DualBootPatcher/
-- "sudo docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v \"$(pwd):/builder/DualBootPatcher:rw,z\"
-  -v \"${HOME}/.android:/builder/.android:rw,z\" silverx2222/dualbootpatcher:9.3.0-14-mingw
-  bash << EOF  \ncd ~/DualBootPatcher/builder\ncmake .. -DMBP_BUILD_TARGET=desktop -DMBP_PORTABLE=ON  && make -j16 && cpack &&  chmod +x dllpack && ./dllpack\n"
-after_success: 
+- |
+  docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v "$(pwd):/builder/DualBootPatcher:rw,z" -v "${HOME}/.android:/builder/.android:rw,z" silverx2222/dualbootpatcher:9.3.0-14-android bash << EOF
+  cd DualBootPatcher/builder && cmake .. -DMBP_BUILD_TARGET=android -DMBP_BUILD_TYPE=debug && make -j16 && rm -rf assets && cpack && make apk -j16
+  exit
+  EOF
 before_deploy:
-  # Set up git user name and tag this commit
-  - git config --local user.name silverx2222
-  - git config --local user.email silverx2222@gmail.com
-  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%m%d%H%M')mingw}
-  - git tag $TRAVIS_TAG
+- git config --local user.name jacktenor
+- git config --local user.email jacktenor1@gmail.com
+- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%H%M%S')-dbg}
+- git tag $TRAVIS_TAG --force
 deploy:
   provider: releases
   api_key:
-    secure: fa5S1DehUkD/7hNjFokaqWEBpWJ0ic+xIUZVzpMBXWlf0WQoyShM1ZhhpipKJsIJ0TC8xK3VfEj90UsRXPv6bGX514m2Mwfojj4vasWZAym53J0FxnCMFKt1kyKmh7/x5IXCIbP+R2VciYlPvMLDwJW2NbryAVsloTLQjUnIk9oE//8j3KXUC4L/m2gnQR4aqLKdFxplxUzf5cUEK1BCWlD/408hwPTGBFab9gZqZ3FH3xKQE1RNXz+o8dcaDIP4W1x1CjP3gFWmu6jobp4OljcA/jxHY85qDSYsBkajUo3OzbsuPhFHVUCPvBFWDLj4kRt/QYZIALzRRgmkJyT9tsNDOLzSvc5jWVb4AlZzTh4wWLD2lGlUSvFTDtXe3ChM+xKU38IZneCwiBjhZM9eQmfGx/z5dMAXmFpQA9lR5RQrTW0N0HlyRcAMk3SnHJV4rqMYcqXJvPZ0r9HtgxrHwAS5Sdie8+28gkSRbtcC65dPH7e+ojdNAg5fQyt/d4hAoEq0v7WaDgh1JqcRJ1dJQu+hDYNwqKNVjjL9JfODOMOrT4J7lGN4sofyy7kBI6nDlaVxlVsw5ACD/a4vATUJvGpzKOdfw0IpPTM+yQE2LtJNSeYcHefPGkIZ2zkKkwE2xkgLf7GZw/OnQNncm6aAyM5l8WOat03VYHotcUJpASA=
+    secure: u6pu0tWN95E5aMIS2PGCW5PulRNFTwfLmqA5VizsZAuBa0hWyUCUpV4eExGHbGih/0X7o4nGE+8Le9AwaQB+iix93E25NmpIDu4vXGlNIiOV1mgihOPQt4ThSUsJlDdOnWvy9/38cXQWXVZBUBUFtGITEmOD7vjYVbgRJJOe5sJrCBGockLBiqwlAHNqd/eTM7uTLL1UylTgNmCAgctCRW7A1RUWEkKYQKqFTR64fDCWDUXz8EqJLvHr4lzTsXSy30880gUanqJVcv4EDGq/2nia3ZGSEkubueF6N6Q1RAkZVC/9MtaO8Przov0jZClwscQPDO3U1btyercQzeBd7r+ppQUOCt+BbzwrYBv7pwvEbLMjC9U0J4j5vF4IVdCQ35YyUXuTBN3j96m1AROwYtGOGNA2TE/1IokyUiWcIz3LTBHclVPsTFHXfj4YX3cnI7j9Hk8sKcPD4wvDkAlEgRNTC9eF0v+DzarW9qIroZf1yjXFjVtF3kt2aj2DrKeVQd9vKa7UqBjYxF8Rcbl5c4tzOozQtAfpszhPthr9t/AX6EqIa+DXq0rLOOm7IMANlTInNaG4LJIdf8j/GXrSPL26YTnm14xwhfrrIuhx9tdI+MoGK11HTG0OCWgX04suuIFaqxyA8ZCRM8dzE7BGbG+E1xl+JEhTLYn9cTA66io=
   file: "${TRAVIS_BUILD_DIR}/DualBootPatcher/Android_GUI/build/outputs/apk/debug/Android_GUI-debug.apk"
   skip_cleanup: true
   on:
     all_branches: true
-    repo: jacktenor/DualBootPatcher
+    repo: jacktenor/dbp
+
