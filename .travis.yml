@@ -4,16 +4,16 @@ git:
 services:
 - docker
 before_install:
-- git clone https://github.com/jacktenor/DualBootPatcher -b master DualBootPatcher/
+- git clone https://github.com/jacktenor/dbp -b master dbp/
 - cd DualBootPatcher && git submodule init && git submodule update && cd ../
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-base
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-mingw
 script:
 - mkdir $HOME/.android
-- mkdir -p ${TRAVIS_BUILD_DIR}/DualBootPatcher/builder/ && cd ${TRAVIS_BUILD_DIR}/DualBootPatcher/
-- "sudo docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v \"$(pwd):/builder/DualBootPatcher:rw,z\"
+- mkdir -p ${TRAVIS_BUILD_DIR}/dbp/builder/ && cd ${TRAVIS_BUILD_DIR}/dbp/
+- "sudo docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v \"$(pwd):/builder/dbp:rw,z\"
   -v \"${HOME}/.android:/builder/.android:rw,z\" silverx2222/dualbootpatcher:9.3.0-14-mingw
-  bash << EOF  \ncd ~/DualBootPatcher/builder\ncmake .. -DMBP_BUILD_TARGET=desktop -DMBP_PORTABLE=ON -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain-mingw.cmake && make -j16 && cpack &&  chmod +x dllpack && ./dllpack\n"
+  bash << EOF  \ncd ~/dbp/builder\ncmake .. -DMBP_BUILD_TARGET=desktop -DMBP_PORTABLE=ON -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain-mingw.cmake && make -j16 && cpack &&  chmod +x dllpack && ./dllpack\n"
 after_success: 
 before_deploy:
 - git config --local user.name jacktenor
