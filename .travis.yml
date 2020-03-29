@@ -18,7 +18,7 @@ after_success:
 before_deploy:
 - git config --local user.name jacktenor
 - git config --local user.email jacktenor1@gmail.com
-- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%H%M%S')-dbg}
+- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%H%M%S')-dbg2}
 - git tag $TRAVIS_TAG --force
 deploy:
   provider: releases
