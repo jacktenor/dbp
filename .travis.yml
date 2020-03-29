@@ -12,7 +12,7 @@ script:
 - mkdir $HOME/.android
 - mkdir -p ${TRAVIS_BUILD_DIR}/dbp/builder/ && cd ${TRAVIS_BUILD_DIR}/dbp/
 -|
- "sudo docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v \"$(pwd):/builder/dbp:rw,z\" -v \"${HOME}/.android:/builder/.android:rw,z\" silverx2222/dualbootpatcher:9.3.0-14-mingw bash << EOF  
+ sudo docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v \"$(pwd):/builder/dbp:rw,z\" -v \"${HOME}/.android:/builder/.android:rw,z\" silverx2222/dualbootpatcher:9.3.0-14-mingw bash << EOF  
  cd builder && cmake .. -DMBP_BUILD_TARGET=desktop -DMBP_PORTABLE=ON -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain-mingw.cmake && make -j16 && cpack &&  chmod +x dllpack && ./dllpack << EOF
 after_success: 
 before_deploy:
