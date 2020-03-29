@@ -41,6 +41,7 @@ deploy:
   file: 
       "${TRAVIS_BUILD_DIR}/dbp/Android_GUI/build/outputs/apk/debug/Android_GUI-debug.apk"
       "${TRAVIS_BUILD_DIR}/dbp/builder/DualBootPatcher-9.3.0-win32.zip"
+      "${TRAVIS_BUILD_DIR}/dbp/builder/utilities/DualBootUtilities-9.3.0.zip"
   skip_cleanup: true
   on:
     all_branches: true
