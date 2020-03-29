@@ -8,7 +8,7 @@ before_install:
 - cd dbp && git submodule init && git submodule update && cd ../
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-base
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-android
-- docker pull silverx2222/dualbootpatcher:9.3.0-14-mingw
+#- docker pull silverx2222/dualbootpatcher:9.3.0-14-mingw
 script:
   # Make work directories 
   - mkdir $HOME/.android
@@ -24,7 +24,7 @@ script:
     # Build Utilities Zip
     cd DualBootPatcher/builder && ./utilities/create.sh
     # Build Linux
-    cmake .. -DMBP_BUILD_TARGET=desktop -DMBP_BUILD_TYPE=debug -DMBP_PORTABLE=ON -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain-mingw.cmake && make -j16 && cpack && chmod +x dllpack && ./dllpack 
+    #cmake .. -DMBP_BUILD_TARGET=desktop -DMBP_BUILD_TYPE=debug -DMBP_PORTABLE=ON -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain-mingw.cmake && make -j16 && cpack && chmod +x dllpack && ./dllpack 
     exit
     EOF
 after_success: 
@@ -39,8 +39,8 @@ deploy:
     secure: u6pu0tWN95E5aMIS2PGCW5PulRNFTwfLmqA5VizsZAuBa0hWyUCUpV4eExGHbGih/0X7o4nGE+8Le9AwaQB+iix93E25NmpIDu4vXGlNIiOV1mgihOPQt4ThSUsJlDdOnWvy9/38cXQWXVZBUBUFtGITEmOD7vjYVbgRJJOe5sJrCBGockLBiqwlAHNqd/eTM7uTLL1UylTgNmCAgctCRW7A1RUWEkKYQKqFTR64fDCWDUXz8EqJLvHr4lzTsXSy30880gUanqJVcv4EDGq/2nia3ZGSEkubueF6N6Q1RAkZVC/9MtaO8Przov0jZClwscQPDO3U1btyercQzeBd7r+ppQUOCt+BbzwrYBv7pwvEbLMjC9U0J4j5vF4IVdCQ35YyUXuTBN3j96m1AROwYtGOGNA2TE/1IokyUiWcIz3LTBHclVPsTFHXfj4YX3cnI7j9Hk8sKcPD4wvDkAlEgRNTC9eF0v+DzarW9qIroZf1yjXFjVtF3kt2aj2DrKeVQd9vKa7UqBjYxF8Rcbl5c4tzOozQtAfpszhPthr9t/AX6EqIa+DXq0rLOOm7IMANlTInNaG4LJIdf8j/GXrSPL26YTnm14xwhfrrIuhx9tdI+MoGK11HTG0OCWgX04suuIFaqxyA8ZCRM8dzE7BGbG+E1xl+JEhTLYn9cTA66io=
   file:   
       ${TRAVIS_BUILD_DIR}/dbp/Android_GUI/build/outputs/apk/debug/Android_GUI-debug.apk
-      ${TRAVIS_BUILD_DIR}/dbp/builder/DualBootPatcher-9.3.0-win32.zip
       ${TRAVIS_BUILD_DIR}/dbp/builder/utilities/DualBootUtilities-9.3.0.zip
+      #${TRAVIS_BUILD_DIR}/dbp/builder/DualBootPatcher-9.3.0-win32.zip
   skip_cleanup: true
   on:
     all_branches: true
