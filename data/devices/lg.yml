@@ -34,13 +34,13 @@
   boot_ui:
     supported: true
     flags:
-      - TW_NO_USB_STORAGE
+      - TW_QCOM_RTC_FIX
     graphics_backends:
       - fbdev
     brightness_path: /sys/devices/platform/msm_fb.526593/leds/lcd-backlight/brightness
     max_brightness: 255
     default_brightness: 162
-    pixel_format: BGR_565
+    pixel_format: RGBX_8888
     theme: portrait_hdpi
 
 - name: LG G2
