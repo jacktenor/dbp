@@ -6,7 +6,7 @@ services:
 before_install:
 - git clone https://github.com/jacktenor/dbp -b master dbp/
 - cd dbp && git submodule init && git submodule update && cd ../
-#- docker pull silverx2222/dualbootpatcher:9.3.0-14-base
+- docker pull silverx2222/dualbootpatcher:9.3.0-14-base
 #- docker pull silverx2222/dualbootpatcher:9.3.0-14-android
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-mingw
 script:
