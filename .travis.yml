@@ -38,8 +38,8 @@ deploy:
   api_key:
     secure: tM4bojOU6iE9uZ/FBtdsKb8bdVOB9ujNShDJF42UFKSOhc8D3rAeEFXR3Plq/vC0Y9+sp/AHh+t0BmJFGL42RFQh/b4LNSZwXezYqIqSiLubBWWTlTwwEevXNtlo3FRTw35uxKxbFi2LvU1WFrSgqw7u2F0+eUOwpVCP+orwfsltYlDi84L+5ggqo1XkZszpRhKkBbe2MlD02XcA4HIYSgjyf227COgqsuTCxJUSZa1k9kBjLpcQJXFy39QwRfTi9tmBR+nXYymbB7KFJfGFpfAuSibz1/sMBqFGlPt3DiteBLburXXgJLs16q3yFL9UmJdfX6ujXlUlcVqgNvIfUrrCyhUJ8jRbSSr4QWWej2shE/Rq4FUVA/ES4DxAEv17yE7YINBQFldRzE7Y2FOU3i8SOIIdq9i9IvNKQlpPNwhlYOb+dD6xXjOP70W32cdGBQyNSDCw0y6u2xi/h+V8uj3yxQYC7FDwgWHCqyzI27HX+WGhWwPZS5SsTbBTjYhe/1+3G9VrdeWldBoX7cH+ttmq4ofncm/Fot2/ivoQKAjUz7rv0k6J9530HWCxVZXaAIHK5Z7OwFjhIbCxt6RKEYc+8hNKYcnNrpLfJKqjeo4YC/AGWKPufse6RxtD/Q6ECzyMI8GvLQxMYCJeoHulxYfCC6MEl10q3JbBPovVySA=
   file:   
-      ${TRAVIS_BUILD_DIR}/dbp/Android_GUI/build/outputs/apk/debug/Android_GUI-debug.apk
-      ${TRAVIS_BUILD_DIR}/dbp/builder/utilities/DualBootUtilities-9.3.0.zip
+      /builder/DualBootPatcher/builder/Android_GUI/build/outputs/apk/debug/Android_GUI-debug.apk
+      /builder/DualBootPatcher/builder/utilities/DualBootUtilities-9.3.0.zip
       #${TRAVIS_BUILD_DIR}/dbp/builder/DualBootPatcher-9.3.0-win32.zip
   skip_cleanup: true
   on:
