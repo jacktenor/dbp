@@ -37,9 +37,9 @@ deploy:
   provider: releases
   api_key:
     secure: Kjprophq6Wp2uDZA7erciksi3G/NZpzXs+tg94PPkVSBxkVeHH8ISDXor8frdLDMJcz0JHyQ12yLUlKzK8HMFuric3ka0Jv+iu62sdUNCQ68nshaxkvDrCcBfGpUKsFCduWMIcVZjIFhl4mrUwtppn3JhaJ3HRUPk6la3Ntbe/pr+WxIM1a1+imv6MTIzSRj/3AI9szc0eD3hQLPXiT8M06rsp1ZjOTqxKxPVvdm70Q45qwAyML58961R/NWJQAYivqZkY9s+4t8/uJHH98afbDM4kYzpzMYS/4mO7l79da1tZOhehrwhVaha268rKpd4JnrLXgKioiRRGCrmZbkO+Awvxqc/j0q3lzWG84AMrWf5HvkBuo82c3X+I/G5x23C325ZszpPk1OP+tRfkSLIry6RJYnOlaLUZCkyiHHqpKEZCoS3KQgSSCPadci4DBMkf6tMDIPOlt7cndERb40vg7frYhZ8WyOZ/g/a4iq6XMzt8TP5QPUJ6n6lxpy65NBywZSNtzHedDI7pnCpbgm9i7yhgshuQ+XO3FykvwJopk7UslFATwaosgFyIHkQuZzWi65QYm84xgttygbldLspykm0rJAObKq8G1OlHaKcZquXRRevuYUO61X+EBNVQNrGTQKsWXRJfoUT4Bq3MNPPRpGv4iUSRP43n0bqO087ws=
-  file: 
-      "${TRAVIS_BUILD_DIR}/DualBootPatcher/Android_GUI/build/outputs/apk/debug/Android_GUI-debug.apk"
-      "${TRAVIS_BUILD_DIR}/DualBootPatcher/utilities/DualBootUtilities-9.3.0.zip"
+file: 
+    "${TRAVIS_BUILD_DIR}/DualBootPatcher/Android_GUI/build/outputs/apk/debug/Android_GUI-debug.apk"
+    "${TRAVIS_BUILD_DIR}/DualBootPatcher/utilities/DualBootUtilities-9.3.0.zip"
   skip_cleanup: true
   on:
     all_branches: true
