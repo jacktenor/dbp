@@ -4,44 +4,30 @@ git:
 services:
 - docker
 before_install:
-- git clone https://github.com/jacktenor/dbp -b master dbp/
-- cd dbp && git submodule init && git submodule update && cd ../
+- git clone https://github.com/jacktenor/DualBootPatcher -b master DualBootPatcher/
+- cd DualBootPatcher && git submodule init && git submodule update && cd ../
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-base
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-android
-#- docker pull silverx2222/dualbootpatcher:9.3.0-14-mingw
+#- docker pull silverx2222/dualbootpatcher:9.3.0-14-linux
 script:
-  # Make work directories 
-  - mkdir $HOME/.android
-  - mkdir -p ${TRAVIS_BUILD_DIR}/dbp/builder/ && cd ${TRAVIS_BUILD_DIR}/dbp/
-  # Build APK
-  - |
-    docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v "$(pwd):/builder/DualBootPatcher:rw,z" -v "${HOME}/.android:/builder/.android:rw,z" silverx2222/dualbootpatcher:9.3.0-14-android bash << EOF
-    cd DualBootPatcher/builder && cmake .. -DMBP_BUILD_TARGET=android -DMBP_BUILD_TYPE=debug && make -j16 && rm -rf assets && cpack && make apk -j16 && make android-system_armeabi-v7a -j16 && make -C data/devices -j16
-    exit
-    EOF
-  - |
-    docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v "$(pwd):/builder/DualBootPatcher:rw,z" -v "${HOME}/.android:/builder/.android:rw,z" silverx2222/dualbootpatcher:9.3.0-14-mingw bash << EOF
-    # Build Utilities Zip
-    cd DualBootPatcher/builder && ./utilities/create.sh
-    # Build Linux
-    #cmake .. -DMBP_BUILD_TARGET=desktop -DMBP_BUILD_TYPE=debug -DMBP_PORTABLE=ON -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain-mingw.cmake && make -j16 && cpack && chmod +x dllpack && ./dllpack 
-    exit
-    EOF
-after_success: 
+- mkdir $HOME/.android
+- mkdir -p ${TRAVIS_BUILD_DIR}/DualBootPatcher/builder/ && cd ${TRAVIS_BUILD_DIR}/DualBootPatcher/
+- |
+  docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v "$(pwd):/builder/DualBootPatcher:rw,z" -v "${HOME}/.android:/builder/.android:rw,z" silverx2222/dualbootpatcher:9.3.0-14-android bash << EOF
+  cd DualBootPatcher/builder && cmake .. -DMBP_BUILD_TARGET=android -DMBP_BUILD_TYPE=debug && make -j16 && rm -rf assets && cpack && make apk -j16
+  exit
+  EOF
 before_deploy:
 - git config --local user.name jacktenor
 - git config --local user.email jacktenor1@gmail.com
-- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%H%M%S')-dbg2}
+- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%H%M%S')-debug}
 - git tag $TRAVIS_TAG --force
 deploy:
   provider: releases
   api_key:
-    secure: tM4bojOU6iE9uZ/FBtdsKb8bdVOB9ujNShDJF42UFKSOhc8D3rAeEFXR3Plq/vC0Y9+sp/AHh+t0BmJFGL42RFQh/b4LNSZwXezYqIqSiLubBWWTlTwwEevXNtlo3FRTw35uxKxbFi2LvU1WFrSgqw7u2F0+eUOwpVCP+orwfsltYlDi84L+5ggqo1XkZszpRhKkBbe2MlD02XcA4HIYSgjyf227COgqsuTCxJUSZa1k9kBjLpcQJXFy39QwRfTi9tmBR+nXYymbB7KFJfGFpfAuSibz1/sMBqFGlPt3DiteBLburXXgJLs16q3yFL9UmJdfX6ujXlUlcVqgNvIfUrrCyhUJ8jRbSSr4QWWej2shE/Rq4FUVA/ES4DxAEv17yE7YINBQFldRzE7Y2FOU3i8SOIIdq9i9IvNKQlpPNwhlYOb+dD6xXjOP70W32cdGBQyNSDCw0y6u2xi/h+V8uj3yxQYC7FDwgWHCqyzI27HX+WGhWwPZS5SsTbBTjYhe/1+3G9VrdeWldBoX7cH+ttmq4ofncm/Fot2/ivoQKAjUz7rv0k6J9530HWCxVZXaAIHK5Z7OwFjhIbCxt6RKEYc+8hNKYcnNrpLfJKqjeo4YC/AGWKPufse6RxtD/Q6ECzyMI8GvLQxMYCJeoHulxYfCC6MEl10q3JbBPovVySA=
-  file:   
-      "${TRAVIS_BUILD_DIR}/DualBootPatcher/Android_GUI/build/outputs/apk/debug/Android_GUI-debug.apk"
-      "${TRAVIS_BUILD_DIR}/utilities/DualBootUtilities-9.3.0.zip"
-       #${TRAVIS_BUILD_DIR}/dbp/builder/DualBootPatcher-9.3.0-win32.zip
+    secure: W3KoBqGmyIFBu4N+OJ8ZYYXPaGCOiM4qWqcy4oD11AjidIYUZjqoPrnHBrSVLo6aCWMw9V0h5tQHCWAFOBV+upFtHjuwWVQx9AKzISUE+6SHHKdzvjXRlCaBGRe+ukcC1ZQhq7Pzuh+6ERbInYTpHaUexMckM1F1X98uNYPu4P+hWwUCzxpScIG86sVMHs0z30JuXq8LVNmYNW1zk1d2VHgQkOcU6eEKIBIp+5gaVbWF7LJou4NtEcn7fPvCPfw5buMn1GjN8v27wVYKsiRiuS/a5PIG1lmVqlGkDrmjcIoH5jSWIxbFT+qQrThI3ivGv+AIuD0kHOCS1IG+zxx0NiEV6uBWKZnzl44hDkoBaI0dyUth9RDMaxnSHNI4zSat1BCcEmRd5+46yDLTVgeowV/kTmEYrfdRZdI+CT8yXb3DcXbpNbHM+Wq0dSzCZEkalLqyrPaG1Xkgb0ympD1dZ1AeTTHmjBjquBCvY7iTCpRgPofPXBEAocVcx4pV1Y9Kh6EI2QTHpDLPcwrJ8EgAykxg+InsKH7JmEB61PEZotZ4+aJAdv515Er+lGf+pYl+6DsjDOVZSv072qOFAz2KSDmEXegMWhmYjIKhbqApif+38lDsCV/LsPFO8Nfe4U/dhOMq2W6MlWTSq+6XxZbJsMTxm+0f3x9yDgBO8+voLYM=
+  file: "${TRAVIS_BUILD_DIR}/DualBootPatcher/Android_GUI/build/outputs/apk/debug/Android_GUI-debug.apk"
   skip_cleanup: true
   on:
     all_branches: true
-    repo: jacktenor/dbp
+    repo: jacktenor/DualBootPatcher
