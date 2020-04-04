@@ -8,7 +8,7 @@ before_install:
 - cd dbp && git submodule init && git submodule update && cd ../
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-base
 - docker pull silverx2222/dualbootpatcher:9.3.0-14-android
-#- docker pull silverx2222/dualbootpatcher:9.3.0-14-mingw
+ #- docker pull silverx2222/dualbootpatcher:9.3.0-14-mingw
 script:
   # Make work directories 
   - mkdir $HOME/.android
